@@ -1,0 +1,4 @@
+﻿CREATE TABLE [dbo].[Musica]
+(
+	[URI] NVARCHAR(200) NOT NULL PRIMARY KEY
+)

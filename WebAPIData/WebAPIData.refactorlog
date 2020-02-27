@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="6e95817e-8b40-41b5-aceb-3b43e986e632" ChangeDateTime="02/27/2020 22:03:24">
+    <Property Name="ElementName" Value="[dbo].[Salas].[estado]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Salas]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Estado" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f2277983-116e-4075-8eb5-3bdd30333451" ChangeDateTime="02/27/2020 22:05:46">
+    <Property Name="ElementName" Value="[dbo].[Salas].[PlayListID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Salas]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PlaylistID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b59c3212-5a87-4c76-b474-ea2540579a51" ChangeDateTime="02/27/2020 22:10:35">
+    <Property Name="ElementName" Value="[dbo].[FK_Salas_P]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[Salas]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_Salas_PlaylistID]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="11376246-dbfd-494f-8140-9a1089b40c74" ChangeDateTime="02/27/2020 22:16:55">
+    <Property Name="ElementName" Value="[dbo].[Musica].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Musica]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="URI" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c8143350-e3b8-4573-aaf7-d5380dab91d5" ChangeDateTime="02/27/2020 22:18:52">
+    <Property Name="ElementName" Value="[dbo].[Playlist_Musica].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Playlist_Musica]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PlaylistID" />
+  </Operation>
+</Operations>
