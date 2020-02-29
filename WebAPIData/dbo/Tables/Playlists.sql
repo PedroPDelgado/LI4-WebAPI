@@ -1,4 +1,5 @@
 ﻿CREATE TABLE [dbo].[Playlists]
 (
-	[Id] INT NOT NULL PRIMARY KEY
+	[ID] INT NOT NULL PRIMARY KEY, 
+    [TotalMusicas] INT NOT NULL DEFAULT 0
 )

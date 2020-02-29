@@ -35,4 +35,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="PlaylistID" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="96e90ac5-a9c3-4c58-8eab-e9dd6c2322d8" ChangeDateTime="02/29/2020 12:11:35">
+    <Property Name="ElementName" Value="[dbo].[Musica].[Posicao]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Musica]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="URI" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9cd79f9c-32d2-43c7-a8c9-269d7d15824c" ChangeDateTime="02/29/2020 12:12:21">
+    <Property Name="ElementName" Value="[dbo].[Playlist_Musica].[MusicaURI]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Playlist_Musica]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MusicaID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="74fdf4d3-400e-48b1-9941-93892a03c95a" ChangeDateTime="02/29/2020 12:18:47">
+    <Property Name="ElementName" Value="[dbo].[Playlists].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Playlists]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ID" />
+  </Operation>
 </Operations>
