@@ -2,7 +2,7 @@
 	@Id int
 AS
 BEGIN
-	select ID, URI
+	select ID, URI, Nome, Artista, Genero, Duracao_ms
 	from dbo.Musica
 	where ID = @Id;
 END
