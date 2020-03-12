@@ -1,9 +1,9 @@
 ﻿CREATE PROCEDURE [dbo].[spMusicaInfo]
-	@Id int
+	@URI nvarchar(100)
 AS
 BEGIN
-	select ID, URI, Nome, Artista, Genero, Duracao_ms
+	select URI, Nome, Artista, Genero, Duracao_ms
 	from dbo.Musica
-	where ID = @Id;
+	where URI = @URI
 END
 

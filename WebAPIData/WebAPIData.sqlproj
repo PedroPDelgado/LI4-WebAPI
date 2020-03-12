@@ -71,6 +71,12 @@
     <Build Include="dbo\Tables\Musica.sql" />
     <Build Include="dbo\Tables\Playlist_Musica.sql" />
     <Build Include="dbo\Stored Procedures\spMusicaInfo.sql" />
+    <Build Include="dbo\Tables\Participantes.sql" />
+    <Build Include="dbo\Stored Procedures\spEntraSala.sql" />
+    <Build Include="dbo\Stored Procedures\spAdicionaMusicaPlaylist.sql" />
+    <Build Include="dbo\Stored Procedures\spRemoverMusicaPlaylistURI.sql" />
+    <Build Include="dbo\Stored Procedures\spNovaMusica.sql" />
+    <Build Include="dbo\Stored Procedures\spMusicasPlaylist.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="WebAPIData.refactorlog" />

@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebAPI.Library.Models;
 
 namespace WebAPI.Library.Internal.DataAccess
 {
@@ -29,8 +30,19 @@ namespace WebAPI.Library.Internal.DataAccess
                 return rows;
             }
         }
+        public void SaveData<T,U>(string storedProcedure, U parameters, string connectionStringName)
+        {
+            string connectionString = GetConnectionString(connectionStringName);
 
-        public void SaveData<T>(string storedProcedure, T parameters, string connectionStringName)
+
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(storedProcedure, parameters,
+                    commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public void DeleteData<T, U>(string storedProcedure, U parameters, string connectionStringName)
         {
             string connectionString = GetConnectionString(connectionStringName);
 
@@ -40,7 +52,6 @@ namespace WebAPI.Library.Internal.DataAccess
                     commandType: CommandType.StoredProcedure);
             }
         }
-
 
     }
 }
