@@ -19,14 +19,5 @@ namespace WebAPI.Library.DataAccess
             return sql.LoadData<MusicaModel, dynamic>("dbo.spMusicaInfo", p, "WebAPIData");
 
         }
-
-        public void InsertMusica(MusicaModel model)
-        {
-            SqlDataAccess sql = new SqlDataAccess();
-
-            sql.SaveData<MusicaModel,dynamic>("dbo.spNovaMusica", model, "WebAPIData");
-        }
-
-
     }
 }

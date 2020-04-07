@@ -2,8 +2,6 @@
 	@SalaId int,
 	@MusicaURI nvarchar(200),
 	@Nome nvarchar(100),
-	@Artista nvarchar(100),
-	@Genero nvarchar(100),
 	@Duracao int,
 	@UserId nvarchar(128)
 AS
@@ -16,8 +14,8 @@ AS
 
 	IF @existeURI IS NULL
 	BEGIN
-		INSERT INTO dbo.[Musica](URI, Nome, Artista, Genero, Duracao_ms)
-		VALUES(@MusicaURI, @Nome, @Artista, @Genero, @Duracao)
+		INSERT INTO dbo.[Musica](URI, Nome, Duracao_ms)
+		VALUES(@MusicaURI, @Nome, @Duracao)
 	END
 	
 	INSERT INTO dbo.[Sala_Musica](SalaID, MusicaURI, UserId)

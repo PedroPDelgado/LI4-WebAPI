@@ -154,4 +154,46 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[spApagaSala]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="c6f44992-fd52-45e9-aa49-7aa4a308505a" ChangeDateTime="04/07/2020 13:20:28">
+    <Property Name="ElementName" Value="[dbo].[Sala_Filtros].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Sala_Filtros]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SalaId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4b76982f-cf3a-44d0-b1b2-de8cef7441eb" ChangeDateTime="04/07/2020 13:37:02">
+    <Property Name="ElementName" Value="[dbo].[Procedure1]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[spFiltrosSala]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a73643f9-842f-4e4c-8ac2-95c76c42bda1" ChangeDateTime="04/07/2020 14:07:55">
+    <Property Name="ElementName" Value="[dbo].[spFiltrosSala]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[spAdicionaFiltroSala]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="aa46d38c-cfc7-4716-be93-6dd46e56189b" ChangeDateTime="04/07/2020 14:08:23">
+    <Property Name="ElementName" Value="[dbo].[spAdicionaFiltroSala]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[spFiltrosSala]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="cc544548-3882-4872-8a18-d3771c71a43d" ChangeDateTime="04/07/2020 14:09:09">
+    <Property Name="ElementName" Value="[dbo].[spSubstituiFiltros]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[spAdicionaFiltroSala]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6fac33aa-d4ac-4214-9c2a-9c199ae99209" ChangeDateTime="04/07/2020 15:34:00">
+    <Property Name="ElementName" Value="[dbo].[Musica_Artistas].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Musica_Artistas]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MusicaURI" />
+  </Operation>
 </Operations>

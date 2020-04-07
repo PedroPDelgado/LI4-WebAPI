@@ -34,7 +34,7 @@ namespace WebAPI.Library.DataAccess
             return sql.LoadData<MusicaModel, dynamic>("dbo.spMusicasSala", parameters, "WebAPIData");
         }
 
-        public void AdicionaMusicaSala(int salaId, string uri, string nome, string artista, string genero, int duracao, string userId)
+        public void AdicionaMusicaSala(int salaId, string uri, string nome,int duracao, string userId)
         {
             SqlDataAccess sql = new SqlDataAccess();
 
@@ -42,8 +42,6 @@ namespace WebAPI.Library.DataAccess
             model.SalaId = salaId;
             model.MusicaURI = uri;
             model.Nome = nome;
-            model.Artista = artista;
-            model.Genero = genero;
             model.Duracao = duracao;
             model.UserId = userId;
 
@@ -105,6 +103,38 @@ namespace WebAPI.Library.DataAccess
             var parameter = new { SalaId = idSala };
 
             return sql.LoadData<string,dynamic>("dbo.spUsersSala", parameter, "WebAPIData");
+        }
+
+        public List<string> GetFiltros(int salaId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameter = new { SalaId = salaId };
+
+            return sql.LoadData<string, dynamic>("dbo.spFiltrosSala", parameter, "WebAPIData");
+        }
+
+        public void AlteraFiltros(int salaId, string userId, List<string> filtros)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            RemoveFiltros(salaId, userId);
+
+            foreach(string filtro in filtros)
+            {
+                var parameter = new { SalaId = salaId, UserId = userId ,Filtro = filtro };
+
+                sql.SaveData<int, dynamic>("dbo.spAdicionaFiltroSala", parameter, "WebAPIData");
+            }
+        }
+
+        private void RemoveFiltros(int salaId, string userId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameter = new { SalaId = salaId, UserId = userId };
+
+            sql.DeleteData<int, dynamic>("dbo.spRemoveFiltrosSala", parameter, "WebAPIData");
         }
     }
 }

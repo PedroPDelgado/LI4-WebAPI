@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,16 +85,17 @@ namespace WebAPI.Controllers
         }
         [Route("Musicas/Adicionar")]
         //POST: adiciona Musica a Sala
-        public void PostMusica(int SalaId, string URI, string Nome, string Artista, string Genero, int Duracao)
+        public void PostMusica(int SalaId, string URI, string Nome, int Duracao)
         {
             SalaAccess sala = new SalaAccess();
 
             string userId = RequestContext.Principal.Identity.GetUserId();
 
-            sala.AdicionaMusicaSala(SalaId, URI, Nome, Artista, Genero, Duracao, userId);
+            sala.AdicionaMusicaSala(SalaId, URI, Nome, Duracao, userId);
         }
 
         [Route("Musicas/Remover")]
+        //DELETE: apagar uma musica
         public void DeleteMusica(int SalaId, string URI)
         {
             SalaAccess sala = new SalaAccess();
@@ -104,11 +106,49 @@ namespace WebAPI.Controllers
         }
 
         [Route("Users")]
-        public List<string> GetUsersSala(int salaId)
+        //GET: Listar os users da sala
+        public List<string> GetUsers(int SalaId)
+
+        {
+            using (var context = new ApplicationDbContext())
+            {
+
+                List<string> res = new List<string>();
+
+                SalaAccess sala = new SalaAccess();
+
+                List<string> userIds = sala.GetUsersSala(SalaId);
+
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+                foreach (string id in userIds)
+                {
+                    res.Add(userManager.FindById(id).UserName);
+                }
+
+                return res;
+            }
+        }
+
+        [Route("Filtros/Lista")]
+        //GET: devolve os filtros de uma sala
+        public List<string> GetFiltros(int SalaId)
         {
             SalaAccess sala = new SalaAccess();
 
-            return sala.GetUsersSala(salaId);
+            return sala.GetFiltros(SalaId);
+        }
+
+        [Route("Filtros/Alterar")]
+        //POST: Altera os filtros de uma sala
+        public void PostFiltros(int SalaId, List<string> filtros)
+        {
+            SalaAccess sala = new SalaAccess();
+
+            string userId = RequestContext.Principal.Identity.GetUserId();
+
+            sala.AlteraFiltros(SalaId, userId, filtros);
         }
 
     }

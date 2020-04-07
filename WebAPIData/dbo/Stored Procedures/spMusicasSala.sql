@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spMusicasSala]
 	@SalaId int
 AS
-	DECLARE @table table(URI nvarchar(200), Nome nvarchar(100), Artista nvarchar(100), Genero nvarchar(100), Duracao int)
+	DECLARE @table table(URI nvarchar(200), Nome nvarchar(100), Duracao int)
 	DECLARE @uri nvarchar(200)
 	DECLARE uris CURSOR
 	FOR SELECT MusicaURI

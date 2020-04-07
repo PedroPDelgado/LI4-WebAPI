@@ -10,8 +10,6 @@ namespace WebAPI.Library.Models
     {
         public string URI { get; set; }
         public string Nome { get; set; }
-        public string Artista { get; set; }
-        public string Genero { get; set; }
         public int Duracao { get; set; }
     }
 }
