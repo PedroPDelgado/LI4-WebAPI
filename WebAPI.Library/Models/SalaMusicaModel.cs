@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Library.Models
 {
-    public class MusicaModel
+    public class SalaMusicaModel
     {
-        public string URI { get; set; }
+        public int SalaId { get; set; }
+        public string MusicaURI { get; set; }
         public string Nome { get; set; }
         public string Artista { get; set; }
         public string Genero { get; set; }
         public int Duracao { get; set; }
+        public string UserId { get; set; }
     }
 }

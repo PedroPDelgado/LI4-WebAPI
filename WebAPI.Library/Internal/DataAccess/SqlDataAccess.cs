@@ -42,6 +42,17 @@ namespace WebAPI.Library.Internal.DataAccess
             }
         }
 
+        public void AlterData<T, U>(string storedProcedure, U parameters, string connectionStringName)
+        {
+            string connectionString = GetConnectionString(connectionStringName);
+
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(storedProcedure, parameters,
+                    commandType: CommandType.StoredProcedure);
+            }
+        }
+
         public void DeleteData<T, U>(string storedProcedure, U parameters, string connectionStringName)
         {
             string connectionString = GetConnectionString(connectionStringName);
