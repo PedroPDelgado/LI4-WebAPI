@@ -48,9 +48,12 @@
     <Compile Include="DataAccess\MusicaAccess.cs" />
     <Compile Include="DataAccess\SalaAccess.cs" />
     <Compile Include="Models\MusicaModel.cs" />
+    <Compile Include="Models\SalaCoordsModel.cs" />
+    <Compile Include="Models\SalaCriarModel.cs" />
     <Compile Include="Models\SalaMusicaModel.cs" />
     <Compile Include="Models\SalaModel.cs" />
     <Compile Include="Models\SalaUserNomePasswordModel.cs" />
+    <Compile Include="Models\SalaViewModel.cs" />
     <Compile Include="Models\UserSalaModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Internal\DataAccess\SqlDataAccess.cs" />

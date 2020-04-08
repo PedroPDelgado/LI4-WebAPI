@@ -2,7 +2,9 @@
 	@SalaId int,
 	@UserId nvarchar(128),
 	@Nome nvarchar(50),
-	@Password nvarchar(100)
+	@Password nvarchar(100),
+	@Xcoord float,
+	@Ycoord float
 AS
 	DECLARE @HashedPwd varbinary(MAX)
 	DECLARE @existeNome nvarchar(50)
@@ -17,8 +19,8 @@ AS
 	BEGIN
 	SET @HashedPwd = HASHBYTES('SHA2_512',@Password) 
 	
-	INSERT INTO dbo.Sala(AuthOwnerID,Nome,Password)
-	VALUES(@UserId,@Nome,@HashedPwd)
+	INSERT INTO dbo.Sala(AuthOwnerID,Nome,Password,Xcoord,Ycoord)
+	VALUES(@UserId,@Nome,@HashedPwd,@Xcoord,@Ycoord)
 
 	SELECT @SalaId = ID
 	FROM dbo.Sala

@@ -17,15 +17,17 @@ namespace WebAPI.Controllers
     {
         [Route("Criar")]
         //POST: criar uma sala
-        public int PostCriar(NomePasswordModel model)
+        public int PostCriar(SalaCriacaoModel model)
         {
             SalaAccess sala = new SalaAccess();
 
-            SalaUserNomePasswordModel smodel = new SalaUserNomePasswordModel();
+            SalaCriarModel smodel = new SalaCriarModel();
 
             smodel.UserId = RequestContext.Principal.Identity.GetUserId();
             smodel.Nome = model.Nome;
             smodel.Password = model.Password;
+            smodel.Xcoord = model.Xcoord;
+            smodel.Ycoord = model.Ycoord;
 
             return sala.CriaSala(smodel);
         }
@@ -72,6 +74,15 @@ namespace WebAPI.Controllers
             SalaAccess sala = new SalaAccess();
 
             return sala.Procurar();
+        }
+
+        [Route("Procurar")]
+        //GET: Listar as N salas mais proximas
+        public List <SalaViewModel> Get(float Xcoord, float Ycoord, int NumeroSalas)
+        {
+            SalaAccess sala = new SalaAccess();
+
+            return sala.Procurar(Xcoord, Ycoord, NumeroSalas);
         }
 
         [Route("Musicas/Lista")]

@@ -18,7 +18,7 @@ namespace WebAPI.Library.DataAccess
             return sql.LoadData<int, dynamic>("dbo.spEntraSala", model, "WebAPIData").FirstOrDefault();
         }
 
-        public int CriaSala(SalaUserNomePasswordModel model)
+        public int CriaSala(SalaCriarModel model)
         {
             SqlDataAccess sql = new SqlDataAccess();
 
@@ -76,6 +76,17 @@ namespace WebAPI.Library.DataAccess
             var parameters = new { UserId = userId, SalaId = salaId };
 
             sql.AlterData<Tuple<string, int>, dynamic>("dbo.spAbreSala", parameters, "WebAPIData");
+        }
+
+        public List<SalaViewModel> Procurar(float xcoord, float ycoord, int numeroSalas)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { Xcoord = xcoord, Ycoord = ycoord, NumSalas = numeroSalas };
+
+            List<SalaViewModel> models = sql.LoadData<SalaViewModel, dynamic>("dbo.spSalasMaisProximas", parameters, "WebAPIData");
+
+            return models;
         }
 
         public List<string> Procurar()
