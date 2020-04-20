@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spRemoverMusicaSalaURI]
 	@SalaId int,
 	@MusicaURI nvarchar(200),
+	@Posicao int,
 	@UserId nvarchar(128)
 AS
 	DECLARE @OwnerId nvarchar(128)
@@ -12,6 +13,11 @@ AS
 	DELETE FROM dbo.[Sala_Musica]
 	WHERE SalaID = @SalaId
 	AND MusicaURI = @MusicaURI
-	AND (UserId = @UserId OR UserId = @OwnerId)
+	AND Posicao = @Posicao
+	AND (UserId = @UserId OR @UserId = @OwnerId)
+
+	UPDATE Sala_Musica
+	SET Posicao = Posicao - 1
+	WHERE Posicao > @Posicao
 
 RETURN 0

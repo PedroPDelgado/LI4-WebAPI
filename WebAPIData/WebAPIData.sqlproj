@@ -72,7 +72,7 @@
     <Build Include="dbo\Stored Procedures\spMusicaInfo.sql" />
     <Build Include="dbo\Tables\Participantes.sql" />
     <Build Include="dbo\Stored Procedures\spEntraSala.sql" />
-    <Build Include="dbo\Stored Procedures\spAdicionaMusicaSala.sql" />
+    <Build Include="dbo\Stored Procedures\spAdicionaMusica.sql" />
     <Build Include="dbo\Stored Procedures\spRemoverMusicaSalaURI.sql" />
     <Build Include="dbo\Stored Procedures\spMusicasSala.sql" />
     <Build Include="dbo\Stored Procedures\spSairSala.sql" />
@@ -87,6 +87,13 @@
     <Build Include="dbo\Stored Procedures\spRemoveFiltrosSala.sql" />
     <Build Include="dbo\Tables\Musica_Artistas.sql" />
     <Build Include="dbo\Stored Procedures\spSalasMaisProximas.sql" />
+    <Build Include="dbo\Stored Procedures\spArtistasMusica.sql" />
+    <Build Include="dbo\Stored Procedures\spExisteMusica.sql" />
+    <Build Include="dbo\Stored Procedures\spAdicionaMusicaSala.sql" />
+    <Build Include="dbo\Stored Procedures\spAdicionaArtistaMusica.sql" />
+    <Build Include="dbo\Stored Procedures\spAlteraCoordenadasSala.sql" />
+    <Build Include="dbo\Stored Procedures\spProximaPosicaoMusicaSala.sql" />
+    <Build Include="dbo\Stored Procedures\spProcurarSalaNome.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="WebAPIData.refactorlog" />

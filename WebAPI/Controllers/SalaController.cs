@@ -32,6 +32,17 @@ namespace WebAPI.Controllers
             return sala.CriaSala(smodel);
         }
 
+        [Route("Localizacao/Alterar")]
+        //POST: alterar coordenadas de localizacao de uma sala
+        public void PostAlterarCoordenadasSala(string SalaId, CoordenadasModel coordenadas)
+        {
+            SalaAccess sala = new SalaAccess();
+
+            string userId = RequestContext.Principal.Identity.GetUserId();
+
+            sala.AlteraCoordenadasSala(SalaId, coordenadas.Xcoord, coordenadas.Ycoord, userId);
+        }
+
         [Route("Eliminar")]
         //DELETE: apaga uma sala
         public void DeleteApagar(int SalaId)
@@ -65,7 +76,7 @@ namespace WebAPI.Controllers
             sala.SaiSala(userId, SalaId);
         }
 
-        [Route("Procurar")]
+        [Route("Procurar/All")]
         //GET: Listar as Salas
         public List<string> Get()
         {
@@ -77,6 +88,15 @@ namespace WebAPI.Controllers
         }
 
         [Route("Procurar")]
+        //GET: Listar as Salas
+        public List<string> Get(string Nome)
+        {
+            SalaAccess sala = new SalaAccess();
+
+            return sala.Procurar(Nome);
+        }
+
+        [Route("Procurar/Localizacao")]
         //GET: Listar as N salas mais proximas
         public List <SalaViewModel> Get(float Xcoord, float Ycoord, int NumeroSalas)
         {
@@ -96,25 +116,37 @@ namespace WebAPI.Controllers
         }
         [Route("Musicas/Adicionar")]
         //POST: adiciona Musica a Sala
-        public void PostMusica(int SalaId, string URI, string Nome, int Duracao)
+        public void PostMusica(int SalaId, MusicaModel musica)
         {
             SalaAccess sala = new SalaAccess();
 
             string userId = RequestContext.Principal.Identity.GetUserId();
 
-            sala.AdicionaMusicaSala(SalaId, URI, Nome, Duracao, userId);
+            sala.AdicionaMusicaSala(SalaId, musica, userId);
         }
 
         [Route("Musicas/Remover")]
         //DELETE: apagar uma musica
-        public void DeleteMusica(int SalaId, string URI)
+        public void DeleteMusica(int SalaId, string URI, int posicao)
         {
             SalaAccess sala = new SalaAccess();
 
             string userId = RequestContext.Principal.Identity.GetUserId();
 
-            sala.RemoveMusicaSala(SalaId, URI, userId);
+            sala.RemoveMusicaSala(SalaId, URI, posicao, userId);
         }
+
+        [Route("Musicas/AlterarOrdem")]
+        //POST: alterar a ordem de uma musica na playlist
+        public void PostAlteraPosicao(ModelAlterarPosicaoMusicaSala model)
+        {
+            SalaAccess sala = new SalaAccess();
+
+            string userId = RequestContext.Principal.Identity.GetUserId();
+
+            sala.AlteraPosicaoMusicaSala(model.SalaId, model.URI, model.PosAtual, model.PosFinal, userId);
+        }
+
 
         [Route("Users")]
         //GET: Listar os users da sala

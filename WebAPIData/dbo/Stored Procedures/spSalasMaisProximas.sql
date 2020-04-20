@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spSalasMaisProximas]
-	@Xcoord float,
-	@Ycoord float,
+	@Xcoord float,--latitude
+	@Ycoord float,--longitude
 	@NumSalas int
 AS
 	DECLARE @UserLoc geography = geography::Point(@Xcoord, @Ycoord, 4326)

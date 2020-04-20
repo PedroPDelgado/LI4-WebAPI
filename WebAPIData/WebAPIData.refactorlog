@@ -196,4 +196,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="MusicaURI" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="5efd808c-3ade-4be8-9af4-19953d5daf4a" ChangeDateTime="04/19/2020 14:49:36">
+    <Property Name="ElementName" Value="[dbo].[spAdicionaMusicaSala]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[spAdicionaMusica]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7ef2290f-256c-492a-8e0c-c9d4959bc279" ChangeDateTime="04/19/2020 15:08:32">
+    <Property Name="ElementName" Value="[dbo].[spAdicionaArtistasMusica]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[spAdicionaArtistaMusica]" />
+  </Operation>
 </Operations>

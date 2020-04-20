@@ -31,28 +31,75 @@ namespace WebAPI.Library.DataAccess
 
             var parameters = new { SalaId = SalaId };
 
-            return sql.LoadData<MusicaModel, dynamic>("dbo.spMusicasSala", parameters, "WebAPIData");
+            List<MusicaModel> musicas = sql.LoadData<MusicaModel, dynamic>("dbo.spMusicasSala", parameters, "WebAPIData");
+
+            foreach(MusicaModel musica in musicas)
+            {
+                var p = new { Uri = musica.URI };
+
+                List<string> list = sql.LoadData<string, dynamic>("dbo.spArtistasMusica", p, "WebAPIData");
+                
+                musica.Artistas = list;
+            }
+
+            return musicas;
         }
 
-        public void AdicionaMusicaSala(int salaId, string uri, string nome,int duracao, string userId)
+        public void AlteraCoordenadasSala(string salaId, double xcoord, double ycoord, string userId)
         {
             SqlDataAccess sql = new SqlDataAccess();
 
-            SalaMusicaModel model = new SalaMusicaModel();
-            model.SalaId = salaId;
-            model.MusicaURI = uri;
-            model.Nome = nome;
-            model.Duracao = duracao;
-            model.UserId = userId;
+            var parameters = new { SalaId = salaId, Xcoord = xcoord, Ycoord = ycoord, UserId = userId};
 
-            sql.SaveData<SalaMusicaModel, dynamic > ("dbo.spAdicionaMusicaSala", model, "WebAPIData");
+            sql.AlterData<string, dynamic>("dbo.spAlteraCoordenadasSala", parameters, "WebAPIData");
         }
 
-        public void RemoveMusicaSala(int salaId, string URI, string userId)
+        public void AdicionaMusicaSala(int salaId, MusicaModel musica, string userId)
         {
             SqlDataAccess sql = new SqlDataAccess();
 
-            var parameters = new { SalaId = salaId, MusicaURI = URI, UserId = userId };
+            var parameters = new { URI = musica.URI };
+
+            string uri = sql.LoadData<string, dynamic>("dbo.spExisteMusica", parameters, "WebAPIData").FirstOrDefault();
+
+            if (uri == null)
+            {
+                var musicaParams = new { MusicaURI = musica.URI, Nome = musica.Nome, Duracao = musica.Duracao_ms, Album = musica.Album, Url_imagem = musica.Url_imagem };
+
+                sql.SaveData<MusicaModel, dynamic>("dbo.spAdicionaMusica", musicaParams, "WebAPIData");
+
+                foreach(string artista in musica.Artistas)
+                {
+                    var artistaParam = new { MusicaURI = musica.URI, Artista = artista };
+
+                    sql.SaveData<MusicaModel, dynamic>("dbo.spAdicionaArtistaMusica", artistaParam, "WebAPIData");
+                }
+            }
+
+            var paramSalaId = new { SalaId = salaId };
+
+            int posicao = sql.LoadData<int, dynamic>("dbo.spProximaPosicaoMusicaSala", paramSalaId, "WebAPIData").FirstOrDefault();
+
+            var paramsSalaMusicaUser = new { SalaId = salaId, MusicaURI = musica.URI, posicao, UserId = userId };
+
+            sql.SaveData<string, dynamic>("dbo.spAdicionaMusicaSala", paramsSalaMusicaUser, "WebAPIData");
+
+        }
+
+        public List<string> Procurar(string nome)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { Nome = nome };
+
+            return sql.LoadData<string, dynamic>("dbo.spProcurarSalaNome", parameters, "WebAPIData");
+        }
+
+        public void RemoveMusicaSala(int salaId, string URI, int posicao ,string userId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { SalaId = salaId, MusicaURI = URI, Posicao = posicao, UserId = userId };
 
             sql.DeleteData<string,dynamic>("dbo.spRemoverMusicaSalaURI", parameters, "WebAPIData");
         }
@@ -87,6 +134,15 @@ namespace WebAPI.Library.DataAccess
             List<SalaViewModel> models = sql.LoadData<SalaViewModel, dynamic>("dbo.spSalasMaisProximas", parameters, "WebAPIData");
 
             return models;
+        }
+
+        public void AlteraPosicaoMusicaSala(int salaId, string uri, int posAtual, int posFinal, string userId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { UserId = userId, SalaId = salaId, MusicaURI = uri, PosicaoAtual = posAtual, PosicaoFinal = posFinal };
+
+            sql.AlterData<string, dynamic>("dbo.spAlteraPosicaoMusicaSala", parameters, "WebAPIData");
         }
 
         public List<string> Procurar()

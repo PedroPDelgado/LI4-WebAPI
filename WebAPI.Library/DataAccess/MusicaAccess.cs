@@ -10,14 +10,17 @@ namespace WebAPI.Library.DataAccess
 {
     public class MusicaAccess
     {
-        public List<MusicaModel> GetMusicaByURI(string URI)
+        public MusicaModel GetMusicaByURI(string URI)
         {
             SqlDataAccess sql = new SqlDataAccess();
 
             var p = new { Uri = URI };
 
-            return sql.LoadData<MusicaModel, dynamic>("dbo.spMusicaInfo", p, "WebAPIData");
+            MusicaModel musica = sql.LoadData<MusicaModel, dynamic>("dbo.spMusicaInfo", p, "WebAPIData").FirstOrDefault();
 
+            musica.Artistas = sql.LoadData<string, dynamic>("dbo.spArtistasMusica", p, "WebAPIData");
+
+            return musica;
         }
     }
 }

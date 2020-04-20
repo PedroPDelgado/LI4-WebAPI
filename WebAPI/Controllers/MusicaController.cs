@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
         {
             MusicaAccess musica = new MusicaAccess();
 
-            return musica.GetMusicaByURI(URI).FirstOrDefault();
+            return musica.GetMusicaByURI(URI);
         }
        
 
