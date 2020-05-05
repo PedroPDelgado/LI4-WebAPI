@@ -1,10 +1,11 @@
-﻿CREATE PROCEDURE [dbo].[spApagaSala]
-	@UserId nvarchar(128),
-	@SalaId int
+﻿CREATE PROCEDURE [dbo].[spAlteraNomeSala]
+	@SalaId int,
+	@Nome nvarchar(50),
+	@UserId nvarchar(128)
 AS
-
 	DECLARE @Owner nvarchar(128) = null
-	
+
+	--verificar que se trata do Owner da Sala	
 	SELECT @Owner = AuthOwnerID
 	FROM Sala
 	WHERE ID = @SalaId
@@ -12,12 +13,8 @@ AS
 
 	IF @Owner is not null
 	BEGIN
-		DELETE FROM dbo.Sala
+		UPDATE Sala
+		SET Nome = @Nome
 		WHERE ID = @SalaId
-		AND AuthOwnerID = @UserId
-
-		DELETE FROM dbo.Participantes
-		WHERE SalaID = @SalaId
 	END
-
 RETURN 0

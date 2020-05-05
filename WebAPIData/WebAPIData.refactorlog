@@ -210,4 +210,18 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[spAdicionaArtistaMusica]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="a3091921-a526-460d-8637-356e59931097" ChangeDateTime="04/29/2020 11:28:48">
+    <Property Name="ElementName" Value="[dbo].[BlackList].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BlackList]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SalaId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9fb8a577-577f-42ff-b7a1-67230767f3fe" ChangeDateTime="04/29/2020 13:18:17">
+    <Property Name="ElementName" Value="[dbo].[Procedure1]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[spBanirUserSala]" />
+  </Operation>
 </Operations>

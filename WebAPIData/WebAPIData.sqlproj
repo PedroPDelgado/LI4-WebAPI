@@ -94,6 +94,15 @@
     <Build Include="dbo\Stored Procedures\spAlteraCoordenadasSala.sql" />
     <Build Include="dbo\Stored Procedures\spProximaPosicaoMusicaSala.sql" />
     <Build Include="dbo\Stored Procedures\spProcurarSalaNome.sql" />
+    <Build Include="dbo\Stored Procedures\spVerificaParticipante.sql" />
+    <Build Include="dbo\Stored Procedures\spAlteraNomeSala.sql" />
+    <Build Include="dbo\Stored Procedures\spAlteraPasswordSala.sql" />
+    <Build Include="dbo\Tables\BlackList.sql" />
+    <Build Include="dbo\Stored Procedures\spBanirUserSala.sql" />
+    <Build Include="dbo\Stored Procedures\spVerificaBanUserSala.sql" />
+    <Build Include="dbo\Stored Procedures\spSalaId.sql" />
+    <Build Include="dbo\Stored Procedures\spRemoveUserSala.sql" />
+    <Build Include="dbo\Stored Procedures\spDesbaneUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="WebAPIData.refactorlog" />

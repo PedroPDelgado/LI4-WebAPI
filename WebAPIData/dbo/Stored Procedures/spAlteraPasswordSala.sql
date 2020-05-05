@@ -1,8 +1,8 @@
-﻿CREATE PROCEDURE [dbo].[spApagaSala]
-	@UserId nvarchar(128),
-	@SalaId int
+﻿CREATE PROCEDURE [dbo].[spAlteraPasswordSala]
+	@SalaId int,
+	@Password nvarchar(50),
+	@UserId nvarchar(128)
 AS
-
 	DECLARE @Owner nvarchar(128) = null
 	
 	SELECT @Owner = AuthOwnerID
@@ -12,12 +12,8 @@ AS
 
 	IF @Owner is not null
 	BEGIN
-		DELETE FROM dbo.Sala
+		UPDATE Sala
+		SET Password = HASHBYTES('SHA2_512',@Password)
 		WHERE ID = @SalaId
-		AND AuthOwnerID = @UserId
-
-		DELETE FROM dbo.Participantes
-		WHERE SalaID = @SalaId
 	END
-
 RETURN 0

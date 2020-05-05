@@ -14,5 +14,7 @@ namespace WebAPI.Library.Models
         public string Password { get; set; }
         public double Xcoord { get; set; }
         public double Ycoord { get; set; }
+        public int LimiteMusicas { get; set; }
+        public int LimiteHorario { get; set; }
     }
 }

@@ -6,5 +6,7 @@
     [Nome] NVARCHAR(50) NOT NULL UNIQUE, 
     [Password] VARBINARY(MAX) NOT NULL, 
     [Xcoord] FLOAT NULL, 
-    [Ycoord] FLOAT NULL
+    [Ycoord] FLOAT NULL, 
+    [LimiteMusicas] INT NULL, 
+    [LimiteHoras] INT NULL
 )

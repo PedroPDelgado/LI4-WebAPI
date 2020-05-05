@@ -11,6 +11,15 @@ namespace WebAPI.Library.DataAccess
     public class SalaAccess
         
     {
+        public int GetSalaId(string nome)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameter = new { SalaId = 0, Nome = nome };
+
+            return sql.LoadData<int, dynamic>("dbo.spSalaId", parameter, "WebAPIData").FirstOrDefault();
+        }
+
         public int EntraSala(SalaUserNomePasswordModel model)
         {
             SqlDataAccess sql = new SqlDataAccess();
@@ -78,12 +87,28 @@ namespace WebAPI.Library.DataAccess
 
             var paramSalaId = new { SalaId = salaId };
 
-            int posicao = sql.LoadData<int, dynamic>("dbo.spProximaPosicaoMusicaSala", paramSalaId, "WebAPIData").FirstOrDefault();
-
-            var paramsSalaMusicaUser = new { SalaId = salaId, MusicaURI = musica.URI, posicao, UserId = userId };
+            var paramsSalaMusicaUser = new { SalaId = salaId, MusicaURI = musica.URI, UserId = userId };
 
             sql.SaveData<string, dynamic>("dbo.spAdicionaMusicaSala", paramsSalaMusicaUser, "WebAPIData");
 
+        }
+
+        public void AlteraNome(int salaId, string nome, string userId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { SalaId = salaId, Nome = nome, UserId = userId };
+
+            sql.AlterData<string, dynamic>("dbo.spAlteraNomeSala", parameters, "WebAPIData");
+        }
+
+        public void AlteraPassword(int salaId, string password, string userId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { SalaId = salaId, Password = password, UserId = userId };
+
+            sql.AlterData<string, dynamic>("dbo.spAlteraPasswordSala", parameters, "WebAPIData");
         }
 
         public List<string> Procurar(string nome)
@@ -102,6 +127,15 @@ namespace WebAPI.Library.DataAccess
             var parameters = new { SalaId = salaId, MusicaURI = URI, Posicao = posicao, UserId = userId };
 
             sql.DeleteData<string,dynamic>("dbo.spRemoverMusicaSalaURI", parameters, "WebAPIData");
+        }
+
+        public void BanirUser(int salaId, string userId, string idUser)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { SalaId = salaId, UserId = userId, IdABanir = idUser };
+
+            sql.SaveData<string, dynamic>("dbo.spBanirUserSala", parameters, "WebAPIData");
         }
 
         public void SaiSala(string userId, int salaId)
@@ -134,6 +168,46 @@ namespace WebAPI.Library.DataAccess
             List<SalaViewModel> models = sql.LoadData<SalaViewModel, dynamic>("dbo.spSalasMaisProximas", parameters, "WebAPIData");
 
             return models;
+        }
+
+        public void RemoverUser(int salaId, string userId, string idARemover)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { SalaId = salaId, UserId = userId, IdARemover = idARemover };
+
+            sql.DeleteData<string, dynamic>("dbo.spRemoveUserSala", parameters, "WebAPIData");
+        }
+
+        public bool VerificaBanUser(int salaId, string userId) //retorna true se o user estiver banido da Sala
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { SalaId = salaId, UserId = userId };
+
+            int existe = sql.LoadData<int, dynamic>("dbo.spVerificaBanUserSala", parameters, "WebAPIData").FirstOrDefault();
+
+            return (existe == 1);
+        }
+
+        public void DesbanirUser(int salaId, string userId, string idUser)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { SalaId = salaId, UserId = userId, IdADesbanir = idUser };
+
+            sql.DeleteData<int, dynamic>("dbo.spDesbaneUser", parameters, "WebAPIData");
+        }
+
+        public bool VerficaParticipante(int salaId, string userId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { SalaId = salaId, UserId = userId };
+
+            int existe = sql.LoadData<int, dynamic>("dbo.spVerificaParticipante", parameters, "WebAPIData").FirstOrDefault();
+
+            return (existe == 1);
         }
 
         public void AlteraPosicaoMusicaSala(int salaId, string uri, int posAtual, int posFinal, string userId)

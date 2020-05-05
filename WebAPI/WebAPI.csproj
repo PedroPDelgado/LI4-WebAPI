@@ -220,6 +220,9 @@
     <Compile Include="Models\ModelAlterarPosicaoMusicaSala.cs" />
     <Compile Include="Models\NomePasswordModel.cs" />
     <Compile Include="Models\SalaCriacaoModel.cs" />
+    <Compile Include="Models\SalaIdNomeModel.cs" />
+    <Compile Include="Models\SalaIdPasswordModel.cs" />
+    <Compile Include="Models\SalaIdUsernameModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />

@@ -4,7 +4,9 @@
 	@Nome nvarchar(50),
 	@Password nvarchar(100),
 	@Xcoord float,
-	@Ycoord float
+	@Ycoord float,
+	@LimiteMusicas int,
+	@LimiteHorario int
 AS
 	DECLARE @HashedPwd varbinary(MAX)
 	DECLARE @existeNome nvarchar(50)
@@ -18,9 +20,19 @@ AS
 	IF @existeNome IS NULL
 	BEGIN
 	SET @HashedPwd = HASHBYTES('SHA2_512',@Password) 
+
+	IF ABS(@Xcoord) < 90 AND ABS(@Ycoord) < 180
+	BEGIN
+		INSERT INTO dbo.Sala(AuthOwnerID,Nome,Password,Xcoord,Ycoord,LimiteMusicas,LimiteHoras)
+		VALUES(@UserId,@Nome,@HashedPwd,@Xcoord,@Ycoord,@LimiteMusicas,@LimiteHorario)
+	END
+	ELSE
+	BEGIN
+		INSERT INTO dbo.Sala(AuthOwnerID,Nome,Password,LimiteMusicas,LimiteHoras)
+		VALUES(@UserId,@Nome,@HashedPwd,@LimiteMusicas,@LimiteHorario)
+	END
 	
-	INSERT INTO dbo.Sala(AuthOwnerID,Nome,Password,Xcoord,Ycoord)
-	VALUES(@UserId,@Nome,@HashedPwd,@Xcoord,@Ycoord)
+
 
 	SELECT @SalaId = ID
 	FROM dbo.Sala
