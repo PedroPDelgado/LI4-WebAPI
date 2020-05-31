@@ -7,7 +7,13 @@ namespace WebAPI.Models
 {
     public class SalaIdUsernameModel
     {
+        /// <summary>
+        /// Identificador da Sala.
+        /// </summary>
         public int SalaId { get; set; }
+        /// <summary>
+        /// Username do utilizador.
+        /// </summary>
         public string Username { get; set; }
     }
 }

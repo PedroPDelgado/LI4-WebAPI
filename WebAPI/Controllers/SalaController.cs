@@ -7,28 +7,40 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using WebAPI.Errors;
 using WebAPI.Library.DataAccess;
 using WebAPI.Library.Models;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// Controlador que permite interagir com Salas.
+    /// </summary>
+
     [Authorize]
     [RoutePrefix("api/Sala")]
     public class SalaController : ApiController
     {
+
+        /// <summary>
+        /// Cria uma nova Sala.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("Criar")]
         //POST: criar uma sala
         /* Coordenadas e Limites de Musicas/Horas sao opcionais
          */
         public HttpResponseMessage PostCriar(SalaCriacaoModel model)
         {
+            ErrorReader errorReader = new ErrorReader();
 
             if(Math.Abs(model.Xcoord) > 90 || Math.Abs(model.Ycoord) > 180)
             {
-                var message = string.Format("Bad coordinates");
+                var message = string.Format(errorReader.GetErrorMessage(0));
                 HttpError err = new HttpError(message);
-                return Request.CreateResponse(HttpStatusCode.BadRequest, err);
+                return Request.CreateResponse(errorReader.GetError(0), err);
             }
             else
             {
@@ -48,6 +60,10 @@ namespace WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Altera o nome da Sala. Ação restrita ao owner da Sala.
+        /// </summary>
+        /// <param name="model"></param>
         [Route("Nome/Alterar")]
         //POST: altera nome da sala
         public void PostAlterarNome(SalaIdNomeModel model)
@@ -57,6 +73,10 @@ namespace WebAPI.Controllers
             sala.AlteraNome(model.SalaId, model.Nome, userId);
         }
 
+        /// <summary>
+        /// Altera a password da Sala. Ação restrita ao owner da Sala.
+        /// </summary>
+        /// <param name="model"></param>
         [Route("Password/Alterar")]
         //POST: altera password da sala
         public void PostAlterarPassword(SalaIdPasswordModel model)
@@ -66,7 +86,10 @@ namespace WebAPI.Controllers
             sala.AlteraPassword(model.SalaId, model.Password, userId);
         }
 
-
+        /// <summary>
+        /// Elimina uma Sala. Ação restrita ao owner da Sala.
+        /// </summary>
+        /// <param name="SalaId">Identificador da Sala.</param>
         [Route("Eliminar")]
         //DELETE: apaga uma sala
         public void DeleteApagar(int SalaId)
@@ -76,10 +99,17 @@ namespace WebAPI.Controllers
             sala.ApagaSala(SalaId, userId);
         }
 
+        /// <summary>
+        /// Entra numa Sala.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("Entrar")]
         //Post: entra numa sala
         public HttpResponseMessage PostEntrar(NomePasswordModel model)
         {
+            ErrorReader errorReader = new ErrorReader();
+
             SalaAccess sala = new SalaAccess();
 
             SalaUserNomePasswordModel smodel = new SalaUserNomePasswordModel();
@@ -92,17 +122,17 @@ namespace WebAPI.Controllers
 
             if (id == 0)
             {
-                var message = string.Format("There isn't a queue with the name {0}.",smodel.Nome);
+                var message = string.Format(errorReader.GetErrorMessage(1), smodel.Nome);
                 HttpError err = new HttpError(message);
-                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+                return Request.CreateResponse(errorReader.GetError(1), err);
             }
             else
             {
                 if(sala.VerificaBanUser(id, smodel.UserId)) //user esta banido da sala
                 {
-                    var message = string.Format("You are banned from {0}.", smodel.Nome);
+                    var message = string.Format(errorReader.GetErrorMessage(2), smodel.Nome);
                     HttpError err = new HttpError(message);
-                    return Request.CreateResponse(HttpStatusCode.NotFound, err);
+                    return Request.CreateResponse(errorReader.GetError(2), err);
                 }
                 else
                 {
@@ -110,9 +140,9 @@ namespace WebAPI.Controllers
 
                     if(return_id == 0)
                     {
-                        var message = string.Format("Wrong Credentials.");
+                        var message = string.Format(errorReader.GetErrorMessage(3));
                         HttpError err = new HttpError(message);
-                        return Request.CreateResponse(HttpStatusCode.NotFound, err);
+                        return Request.CreateResponse(errorReader.GetError(3), err);
                     }
                     else
                     {
@@ -122,7 +152,10 @@ namespace WebAPI.Controllers
             }
 
         }
-
+        /// <summary>
+        /// Sai de uma Sala.
+        /// </summary>
+        /// <param name="SalaId">Identificador da Sala.</param>
         [Route("Sair")]
         //DELETE: sair de uma sala
         public void DeleteSair(int SalaId)
@@ -131,7 +164,10 @@ namespace WebAPI.Controllers
             string userId = RequestContext.Principal.Identity.GetUserId();
             sala.SaiSala(userId, SalaId);
         }
-
+        /// <summary>
+        /// Bane um utilizador da Sala. Ação restrita ao owner da Sala.
+        /// </summary>
+        /// <param name="model"></param>
         [Route("Utilizadores/Banir")]
         //POST: banir um user de uma sala
         public void PostBanir(SalaIdUsernameModel model)
@@ -146,7 +182,10 @@ namespace WebAPI.Controllers
                 sala.BanirUser(model.SalaId, userId, idUser);
             }
         }
-
+        /// <summary>
+        /// Remove um utilizador de uma Sala. Ação restrita ao owner da Sala.
+        /// </summary>
+        /// <param name="model"></param>
         [Route("Utilizadores/Remover")]
         //POST: remover um user da sala
         public void PostRemoverUserSala(SalaIdUsernameModel model)
@@ -161,7 +200,10 @@ namespace WebAPI.Controllers
                 sala.RemoverUser(model.SalaId, userId, idUser);
             }
         }
-
+        /// <summary>
+        /// Readmite um utilizador removendo-o da lista de utilizadores banidos da Sala. Ação restrita ao owner da Sala.
+        /// </summary>
+        /// <param name="model"></param>
         [Route("Utilizadores/Readmitir")]
         //DELETE: desbanir um user
         public void DeleteBanUser(SalaIdUsernameModel model)
@@ -177,7 +219,11 @@ namespace WebAPI.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Retorna a lista de usernames dos utilizadores da Sala.
+        /// </summary>
+        /// <param name="SalaId"></param>
+        /// <returns></returns>
         [Route("Utilizadores/Lista")]
         //GET: Listar os users da sala
         public List<string> GetUsers(int SalaId)
@@ -203,7 +249,11 @@ namespace WebAPI.Controllers
                 return res;
             }
         }
-
+        /// <summary>
+        /// Altera as coordenadas de localização da Sala. Ação restrita ao owner da Sala.
+        /// </summary>
+        /// <param name="SalaId"></param>
+        /// <param name="coordenadas"></param>
         [Route("Localizacao/Alterar")]
         //POST: alterar coordenadas de localizacao de uma sala
         public void PostAlterarCoordenadasSala(string SalaId, CoordenadasModel coordenadas)
@@ -215,6 +265,10 @@ namespace WebAPI.Controllers
             sala.AlteraCoordenadasSala(SalaId, coordenadas.Xcoord, coordenadas.Ycoord, userId);
         }
 
+        /// <summary>
+        /// Retorna uma lista com os nomes de todas as Salas.
+        /// </summary>
+        /// <returns></returns>
         [Route("Procurar/All")]
         //GET: Listar as Salas
         public List<string> Get()
@@ -226,6 +280,11 @@ namespace WebAPI.Controllers
             return sala.Procurar();
         }
 
+        /// <summary>
+        /// Retorna uma lista com os nomes das Salas cujo nome contenha a string procurada (case insensitive).
+        /// </summary>
+        /// <param name="Nome">Nome da Sala a procurar.</param>
+        /// <returns></returns>
         [Route("Procurar")]
         //GET: Listar as Salas
         public List<string> Get(string Nome)
@@ -235,6 +294,13 @@ namespace WebAPI.Controllers
             return sala.Procurar(Nome);
         }
 
+        /// <summary>
+        /// Retorna uma lista com os nomes das N Salas mais próximas do utilizador com base nas suas coordenadas.
+        /// </summary>
+        /// <param name="Xcoord">Latitude do utilizador.</param>
+        /// <param name="Ycoord">Longitude do utilizador.</param>
+        /// <param name="NumeroSalas">Número máximo de salas a retornar.</param>
+        /// <returns></returns>
         [Route("Procurar/Localizacao")]
         //GET: Listar as N salas mais proximas
         public List <SalaViewModel> Get(float Xcoord, float Ycoord, int NumeroSalas)
@@ -244,6 +310,11 @@ namespace WebAPI.Controllers
             return sala.Procurar(Xcoord, Ycoord, NumeroSalas);
         }
 
+        /// <summary>
+        /// Retorna uma lista com as músicas de uma Sala. Ação restrita a participantes da Sala.
+        /// </summary>
+        /// <param name="SalaId"></param>
+        /// <returns></returns>
         [Route("Musicas/Lista")]
         //GET: listar musicas de uma sala
         public List<MusicaModel> GetMusicas(int SalaId)
@@ -253,10 +324,19 @@ namespace WebAPI.Controllers
             return sala.GetMusicasSala(SalaId);
 
         }
+
+        /// <summary>
+        /// Adiciona uma música à Sala. Ação restrita a participantes da Sala.
+        /// </summary>
+        /// <param name="SalaId"></param>
+        /// <param name="musica"></param>
+        /// <returns></returns>
         [Route("Musicas/Adicionar")]
         //POST: adiciona Musica a Sala
         public HttpResponseMessage PostMusica(int SalaId, MusicaModel musica)
         {
+            ErrorReader errorReader = new ErrorReader();
+
             SalaAccess sala = new SalaAccess();
 
             string userId = RequestContext.Principal.Identity.GetUserId();
@@ -268,13 +348,19 @@ namespace WebAPI.Controllers
             }
             else
             {
-                var message = string.Format("User is not a member of the specified queue");
+                var message = string.Format(errorReader.GetErrorMessage(4));
                 HttpError err = new HttpError(message);
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, err);
+                return Request.CreateResponse(errorReader.GetError(4), err);
             }
             
         }
 
+        /// <summary>
+        /// Remove uma música da Sala. Ação restrita ao owner da Sala e ao participante que adicionou a música.
+        /// </summary>
+        /// <param name="SalaId">Identificador da Sala.</param>
+        /// <param name="URI">Identificador da música.</param>
+        /// <param name="posicao">Posição da música na queue.</param>
         [Route("Musicas/Remover")]
         //DELETE: apagar uma musica
         public void DeleteMusica(int SalaId, string URI, int posicao)
@@ -286,6 +372,10 @@ namespace WebAPI.Controllers
             sala.RemoveMusicaSala(SalaId, URI, posicao, userId);
         }
 
+        /// <summary>
+        /// Altera a ordem de uma música na Sala. Ação restrita ao owner da Sala.
+        /// </summary>
+        /// <param name="model"></param>
         [Route("Musicas/AlterarOrdem")]
         //POST: alterar a ordem de uma musica na playlist
         public void PostAlteraPosicao(ModelAlterarPosicaoMusicaSala model)
@@ -297,7 +387,11 @@ namespace WebAPI.Controllers
             sala.AlteraPosicaoMusicaSala(model.SalaId, model.URI, model.PosAtual, model.PosFinal, userId);
         }
 
-
+        /// <summary>
+        /// Devolve a lista de filtros da Sala. Ação restrita aos participantes da Sala.
+        /// </summary>
+        /// <param name="SalaId">Identificador da Sala.</param>
+        /// <returns></returns>
         [Route("Filtros/Lista")]
         //GET: devolve os filtros de uma sala
         public List<string> GetFiltros(int SalaId)
@@ -307,6 +401,11 @@ namespace WebAPI.Controllers
             return sala.GetFiltros(SalaId);
         }
 
+        /// <summary>
+        /// Substitui os filtros da Sala pelos filtros especificados. Ação restrita ao owner da Sala.
+        /// </summary>
+        /// <param name="SalaId">Identificador da Sala.</param>
+        /// <param name="filtros">Lista de novos filtros.</param>
         [Route("Filtros/Alterar")]
         //POST: Altera os filtros de uma sala
         public void PostFiltros(int SalaId, List<string> filtros)

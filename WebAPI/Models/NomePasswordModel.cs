@@ -7,7 +7,13 @@ namespace WebAPI.Models
 {
     public class NomePasswordModel
     {
+        /// <summary>
+        /// Nome da Sala.
+        /// </summary>
         public string Nome { get; set; }
+        /// <summary>
+        /// Password da Sala.
+        /// </summary>
         public string Password { get; set; }
     }
 }

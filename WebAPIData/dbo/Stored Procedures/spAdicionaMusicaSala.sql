@@ -6,11 +6,15 @@ AS
 	DECLARE @LimiteMusicas int
 	DECLARE @LimiteHorario int
 	DECLARE @NumMusicas int = 0
-	DECLARE @TempoTotal float = 0.0
+	DECLARE @TempoTotal bigint = 0
 	DECLARE @Duracao int
 	DECLARE @Posicao int
 
-	SELECT @LimiteMusicas = LimiteMusicas, @LimiteHorario = LimiteHoras
+	SELECT @LimiteMusicas = LimiteMusicas
+	FROM Sala
+	WHERE ID = @SalaId
+
+	SELECT @LimiteHorario = LimiteHoras
 	FROM Sala
 	WHERE ID = @SalaId
 
@@ -32,7 +36,7 @@ AS
 	WHERE URI = @MusicaURI
 
 
-	IF(@NumMusicas+1 <= @LimiteMusicas AND @TempoTotal+@Duracao <= (@LimiteHorario*3600000))
+	IF(@NumMusicas+1 <= @LimiteMusicas AND ((@LimiteHorario+@Duracao)/60000) <= (@LimiteHorario*60))
 	BEGIN
 
 		SELECT @Posicao = COUNT(Posicao)+1

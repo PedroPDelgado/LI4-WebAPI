@@ -1,0 +1,8 @@
+﻿Bad coordinates.#400
+There isn't a queue with the name {0}.#404
+You are banned from {0}.#401
+Wrong Credentials.#404
+User is not a member of the specified queue.#401
+Room name {0} is already taken.#406
+User {0} is not in the queue.#404
+Music {0} is not in the queue.#404
