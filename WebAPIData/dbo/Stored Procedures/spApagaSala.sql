@@ -12,12 +12,20 @@ AS
 
 	IF @Owner is not null
 	BEGIN
+		
+		DELETE FROM dbo.Participantes
+		WHERE SalaID = @SalaId
+
+		DELETE FROM BlackList
+		WHERE SalaId = @SalaId
+
+		DELETE FROM Sala_Filtros
+		WHERE SalaId = @SalaId
+
 		DELETE FROM dbo.Sala
 		WHERE ID = @SalaId
 		AND AuthOwnerID = @UserId
 
-		DELETE FROM dbo.Participantes
-		WHERE SalaID = @SalaId
 	END
 
 RETURN 0

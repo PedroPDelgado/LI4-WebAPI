@@ -6,3 +6,5 @@ User is not a member of the specified queue.#401
 Room name {0} is already taken.#406
 User {0} is not in the queue.#404
 Music {0} is not in the queue.#404
+Name and Password must be non empty.#400
+You are not in a room.#404

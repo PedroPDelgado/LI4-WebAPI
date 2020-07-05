@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using WebAPI.Library.Internal.DataAccess;
 using WebAPI.Library.Models;
 
@@ -179,6 +181,28 @@ namespace WebAPI.Library.DataAccess
             sql.DeleteData<string, dynamic>("dbo.spRemoveUserSala", parameters, "WebAPIData");
         }
 
+        public int GetIdSala(string userId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameter = new { IdUser = userId };  
+
+            int id = sql.LoadData<int, dynamic>("dbo.spGetIdSalaUser", parameter, "WebAPIData").FirstOrDefault();
+
+            return id;
+        }
+
+        public bool IsOwner(int idSala, string userId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { SalaId = idSala, UserId = userId };
+
+            int res = sql.LoadData<int, dynamic>("dbo.spIsOwner", parameters, "WebAPIData").FirstOrDefault();
+
+            return (res == 1);
+        }
+
         public bool VerificaBanUser(int salaId, string userId) //retorna true se o user estiver banido da Sala
         {
             SqlDataAccess sql = new SqlDataAccess();
@@ -197,6 +221,17 @@ namespace WebAPI.Library.DataAccess
             var parameters = new { SalaId = salaId, UserId = userId, IdADesbanir = idUser };
 
             sql.DeleteData<int, dynamic>("dbo.spDesbaneUser", parameters, "WebAPIData");
+        }
+
+        public string GetNomeSala(int id)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameter = new { SalaId = id };
+
+            string nome = sql.LoadData<string, dynamic>("dbo.spGetNomeSala", parameter, "WebAPIData").FirstOrDefault();
+
+            return nome;
         }
 
         public bool VerficaParticipante(int salaId, string userId)
@@ -276,6 +311,34 @@ namespace WebAPI.Library.DataAccess
             var parameter = new { SalaId = salaId, UserId = userId };
 
             sql.DeleteData<int, dynamic>("dbo.spRemoveFiltrosSala", parameter, "WebAPIData");
+        }
+
+
+        public List<string> GetBansSala(int salaId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameter = new { SalaId = salaId };
+
+            return sql.LoadData<string, dynamic>("dbo.spBansSala", parameter, "WebAPIData");
+        }
+
+        public int GetMusicaAtual(int salaId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameter = new { SalaId = salaId };
+
+            return sql.LoadData<int, dynamic>("dbo.spMusicaAtualSala", parameter, "WebAPIData").FirstOrDefault();
+        }
+
+        public void AtualizaMusicaAtual(int salaId, int posicao)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var parameters = new { SalaId = salaId, Posicao = posicao };
+
+            sql.AlterData<int, dynamic>("dbo.spAlteraMusicaAtualSala", parameters, "WebAPIData");
         }
     }
 }

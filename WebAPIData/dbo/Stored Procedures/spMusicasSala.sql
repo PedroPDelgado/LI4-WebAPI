@@ -7,6 +7,7 @@ AS
 	FOR SELECT MusicaURI
 	FROM dbo.[Sala_Musica]
 	WHERE SalaID = @SalaId
+	ORDER BY Posicao ASC
 
 	OPEN uris
 

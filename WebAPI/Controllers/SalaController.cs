@@ -44,19 +44,29 @@ namespace WebAPI.Controllers
             }
             else
             {
-                SalaAccess sala = new SalaAccess();
+                if(model.Nome.Equals("") || model.Password.Equals(""))
+                {
+                    var message = string.Format(errorReader.GetErrorMessage(8));
+                    HttpError err = new HttpError(message);
+                    return Request.CreateResponse(errorReader.GetError(8), err);
+                }
+                else
+                {
+                    SalaAccess sala = new SalaAccess();
 
-                SalaCriarModel smodel = new SalaCriarModel();
+                    SalaCriarModel smodel = new SalaCriarModel();
 
-                smodel.UserId = RequestContext.Principal.Identity.GetUserId();
-                smodel.Nome = model.Nome;
-                smodel.Password = model.Password;
-                smodel.Xcoord = model.Xcoord;
-                smodel.Ycoord = model.Ycoord;
-                smodel.LimiteMusicas = model.LimiteMusicas;
-                smodel.LimiteHorario = model.LimiteHorario;
+                    smodel.UserId = RequestContext.Principal.Identity.GetUserId();
+                    smodel.Nome = model.Nome;
+                    smodel.Password = model.Password;
+                    smodel.Xcoord = model.Xcoord;
+                    smodel.Ycoord = model.Ycoord;
+                    smodel.LimiteMusicas = model.LimiteMusicas;
+                    smodel.LimiteHorario = model.LimiteHorario;
 
-                return Request.CreateResponse(HttpStatusCode.OK,sala.CriaSala(smodel));
+                    return Request.CreateResponse(HttpStatusCode.OK, sala.CriaSala(smodel));
+                }
+                
             }
         }
 
@@ -153,6 +163,41 @@ namespace WebAPI.Controllers
 
         }
         /// <summary>
+        /// Retorna informação sobre o utilizador relativa ao seu Id, Nome e se se trata de um Owner. 
+        /// </summary>
+        [Route("Info")]
+        public HttpResponseMessage GetInfo()
+        {
+            SalaAccess sala = new SalaAccess();
+
+            ErrorReader errorReader = new ErrorReader();
+
+            string userId = RequestContext.Principal.Identity.GetUserId();
+
+            int idSala = sala.GetIdSala(userId);
+
+            if(idSala == 0)
+            {
+                var message = string.Format(errorReader.GetErrorMessage(9));
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(errorReader.GetError(9), err);
+            }
+            else
+            {
+                string nomeSala = sala.GetNomeSala(idSala);
+                bool isOnwer = sala.IsOwner(idSala, userId);
+
+                InfoModel model = new InfoModel();
+                model.Id = idSala;
+                model.Nome = nomeSala;
+                model.isOwner = isOnwer;
+
+                return Request.CreateResponse(HttpStatusCode.OK, model);
+            }
+        }
+
+        
+        /// <summary>
         /// Sai de uma Sala.
         /// </summary>
         /// <param name="SalaId">Identificador da Sala.</param>
@@ -205,8 +250,8 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="model"></param>
         [Route("Utilizadores/Readmitir")]
-        //DELETE: desbanir um user
-        public void DeleteBanUser(SalaIdUsernameModel model)
+        //POST: desbanir um user
+        public void PostBanUser(SalaIdUsernameModel model)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -249,6 +294,36 @@ namespace WebAPI.Controllers
                 return res;
             }
         }
+
+        /// <summary>
+        /// Retorna a lista de usernames dos utilizadores banidos da Sala.
+        /// </summary>
+        /// <param name="SalaId"></param>
+        [Route("Utilizadores/Banidos")]
+        public List<String> GetBans(int SalaId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+
+                List<string> res = new List<string>();
+
+                SalaAccess sala = new SalaAccess();
+
+                List<string> userIds = sala.GetBansSala(SalaId);
+
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+                foreach (string id in userIds)
+                {
+                    res.Add(userManager.FindById(id).UserName);
+                }
+
+                return res;
+            }
+        }
+    
+
         /// <summary>
         /// Altera as coordenadas de localização da Sala. Ação restrita ao owner da Sala.
         /// </summary>
@@ -311,7 +386,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Retorna uma lista com as músicas de uma Sala. Ação restrita a participantes da Sala.
+        /// Retorna uma lista com as músicas de uma Sala por ordem da sua posição. Ação restrita a participantes da Sala.
         /// </summary>
         /// <param name="SalaId"></param>
         /// <returns></returns>
@@ -388,7 +463,37 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Devolve a lista de filtros da Sala. Ação restrita aos participantes da Sala.
+        /// Retorna a música atual a tocar da Sala.
+        /// </summary>
+        /// <param name="SalaId"></param>
+        [Route("Musicas/MusicaAtual")]
+        public int GetMusicaAtual(int SalaId)
+        {
+            SalaAccess sala = new SalaAccess();
+
+            return sala.GetMusicaAtual(SalaId);
+        }
+
+        /// <summary>
+        /// Altera a música atual a tocar da Sala.
+        /// </summary>
+        /// <param name="SalaId"></param>
+        /// <param name="Posicao"></param>
+        [Route("Musicas/MusicaAtual")]
+        public void PostMusicaAtual(int SalaId, int Posicao)
+        {
+            SalaAccess sala = new SalaAccess();
+
+            string userId = RequestContext.Principal.Identity.GetUserId();
+
+            if(sala.IsOwner(SalaId, userId))
+            {
+                sala.AtualizaMusicaAtual(SalaId, Posicao);
+            }
+        }
+
+        /// <summary>
+        /// Retorna a lista de filtros da Sala. Ação restrita aos participantes da Sala.
         /// </summary>
         /// <param name="SalaId">Identificador da Sala.</param>
         /// <returns></returns>
@@ -417,5 +522,6 @@ namespace WebAPI.Controllers
             sala.AlteraFiltros(SalaId, userId, filtros);
         }
 
+        
     }
 }

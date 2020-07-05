@@ -530,6 +530,11 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.SalaController.GetInfo">
+            <summary>
+            Retorna informação sobre o utilizador relativa ao seu Id, Nome e se se trata de um Owner. 
+            </summary>
+        </member>
         <member name="M:WebAPI.Controllers.SalaController.DeleteSair(System.Int32)">
             <summary>
             Sai de uma Sala.
@@ -548,7 +553,7 @@
             </summary>
             <param name="model"></param>
         </member>
-        <member name="M:WebAPI.Controllers.SalaController.DeleteBanUser(WebAPI.Models.SalaIdUsernameModel)">
+        <member name="M:WebAPI.Controllers.SalaController.PostBanUser(WebAPI.Models.SalaIdUsernameModel)">
             <summary>
             Readmite um utilizador removendo-o da lista de utilizadores banidos da Sala. Ação restrita ao owner da Sala.
             </summary>
@@ -560,6 +565,12 @@
             </summary>
             <param name="SalaId"></param>
             <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SalaController.GetBans(System.Int32)">
+            <summary>
+            Retorna a lista de usernames dos utilizadores banidos da Sala.
+            </summary>
+            <param name="SalaId"></param>
         </member>
         <member name="M:WebAPI.Controllers.SalaController.PostAlterarCoordenadasSala(System.String,WebAPI.Models.CoordenadasModel)">
             <summary>
@@ -592,7 +603,7 @@
         </member>
         <member name="M:WebAPI.Controllers.SalaController.GetMusicas(System.Int32)">
             <summary>
-            Retorna uma lista com as músicas de uma Sala. Ação restrita a participantes da Sala.
+            Retorna uma lista com as músicas de uma Sala por ordem da sua posição. Ação restrita a participantes da Sala.
             </summary>
             <param name="SalaId"></param>
             <returns></returns>
@@ -619,9 +630,22 @@
             </summary>
             <param name="model"></param>
         </member>
+        <member name="M:WebAPI.Controllers.SalaController.GetMusicaAtual(System.Int32)">
+            <summary>
+            Retorna a música atual a tocar da Sala.
+            </summary>
+            <param name="SalaId"></param>
+        </member>
+        <member name="M:WebAPI.Controllers.SalaController.PostMusicaAtual(System.Int32,System.Int32)">
+            <summary>
+            Altera a música atual a tocar da Sala.
+            </summary>
+            <param name="SalaId"></param>
+            <param name="Posicao"></param>
+        </member>
         <member name="M:WebAPI.Controllers.SalaController.GetFiltros(System.Int32)">
             <summary>
-            Devolve a lista de filtros da Sala. Ação restrita aos participantes da Sala.
+            Retorna a lista de filtros da Sala. Ação restrita aos participantes da Sala.
             </summary>
             <param name="SalaId">Identificador da Sala.</param>
             <returns></returns>

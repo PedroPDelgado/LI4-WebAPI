@@ -103,6 +103,14 @@
     <Build Include="dbo\Stored Procedures\spSalaId.sql" />
     <Build Include="dbo\Stored Procedures\spRemoveUserSala.sql" />
     <Build Include="dbo\Stored Procedures\spDesbaneUser.sql" />
+    <Build Include="dbo\Stored Procedures\spGetIdSalaUser.sql" />
+    <Build Include="dbo\Stored Procedures\spBansSala.sql" />
+    <Build Include="dbo\Stored Procedures\spGetNomeSala.sql" />
+    <Build Include="dbo\Stored Procedures\spIsOwner.sql" />
+    <Build Include="dbo\Stored Procedures\spMusicaAtualSala.sql" />
+    <Build Include="dbo\Stored Procedures\spAlteraMusicaAtualSala.sql" />
+    <Build Include="dbo\Tables\Filtros.sql" />
+    <Build Include="dbo\Stored Procedures\spProcuraFiltro.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="WebAPIData.refactorlog" />

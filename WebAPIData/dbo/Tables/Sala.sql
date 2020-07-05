@@ -8,5 +8,6 @@
     [Xcoord] FLOAT NULL, 
     [Ycoord] FLOAT NULL, 
     [LimiteMusicas] INT NULL, 
-    [LimiteHoras] INT NULL
+    [LimiteHoras] INT NULL, 
+    [MusicaAtual] INT NOT NULL DEFAULT 0
 )
